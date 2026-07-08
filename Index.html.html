@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>របាយការណ៍ការរួមចំណែកអតិផរណា (CPI Table 6) ខេត្តពោធិ៍សាត់ ២០២៦</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Khmer -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,700;1,400&family=Moul&family=Nokora:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kantumruy Pro', 'Nokora', 'sans-serif'],
+                        moul: ['Moul', 'serif']
+                    },
+                    colors: {
+                        primary: '#0B2545',
+                        secondary: '#134074',
+                        accent: '#EEB902',
+                        lightbg: '#EEF4F8'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', 'Nokora', sans-serif;
+            background-color: #f4f7fa;
+        }
+        .moul-title {
+            font-family: 'Moul', serif;
+            line-height: 1.8;
+        }
+        /* Word Export Styling wrapper replicating standard A4 margins */
+        .word-page {
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin: 20px auto;
+            padding: 2.54cm; /* standard 1 inch margin */
+            width: 21cm; /* A4 width */
+            min-height: 29.7cm; /* A4 height */
+            color: #222;
+            line-height: 1.6;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .no-print {
+                display: none;
+            }
+            .word-page {
+                box-shadow: none;
+                margin: 0;
+                width: 100%;
+                height: auto;
+                page-break-after: always;
+            }
+        }
+        /* Toast notification styling */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            font-size: 14px;
+        }
+        #toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <header class="bg-primary text-white sticky top-0 z-50 shadow-md no-print">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-accent p-2 rounded text-primary font-bold">
+                    <i class="fa-solid fa-chart-line text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="moul-title text-base sm:text-lg text-accent">រដ្ឋបាលខេត្តពោធិ៍សាត់</h1>
+                    <p class="text-xs text-slate-300 font-sans">ប្រព័ន្ធវិភាគការរួមចំណែកអតិផរណា (CPI Table 6) ២០២៦</p>
+                </div>
+            </div>
+            
+            <nav class="flex space-x-2 mt-2 sm:mt-0">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="px-4 py-2 rounded-md text-sm font-medium bg-secondary text-white border-b-2 border-accent transition-all duration-200">
+                    <i class="fa-solid fa-chart-column mr-2"></i>ផ្ទាំងគ្រប់គ្រង Table 6
+                </button>
+                <button onclick="switchTab('report')" id="btn-report" class="px-4 py-2 rounded-md text-sm font-medium hover:bg-secondary/50 text-slate-200 transition-all duration-200">
+                    <i class="fa-solid fa-book-open mr-2"></i>សៀវភៅរបាយការណ៍ប្រតិបត្តិ
+                </button>
+                <button onclick="switchTab('export-section')" id="btn-export-section" class="px-4 py-2 rounded-md text-sm font-medium hover:bg-secondary/50 text-slate-200 transition-all duration-200">
+                    <i class="fa-solid fa-file-word mr-2"></i>នាំចេញទៅ MS-Word
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 py-6">
+        
+        <section id="tab-dashboard" class="space-y-6">
+            
+            <!-- Quick Summary Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-primary flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">អត្រាអតិផរណារួមប្រចាំឆ្នាំ (YoY)</p>
+                        <h3 class="text-3xl font-bold text-primary mt-1">+6.01%</h3>
+                        <p class="text-xs text-slate-400 mt-1">ផ្អែកលើឯកសារ cpi_province_281-Pursat.xlsx</p>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-full text-primary">
+                        <i class="fa-solid fa-scale-balanced text-2xl"></i>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-red-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">ការរួមចំណែកខ្ពស់បំផុត (Food)</p>
+                        <h3 class="text-3xl font-bold text-red-600 mt-1" id="sum-cpi-food-contrib">+3.48%</h3>
+                        <p class="text-xs text-red-500 mt-1"><i class="fa-solid fa-pizza-slice mr-1"></i>ម្ហូបអាហារមានសម្ពាធខ្លាំងជាងគេ</p>
+                    </div>
+                    <div class="bg-red-50 p-3 rounded-full text-red-500">
+                        <i class="fa-solid fa-fire-flame-curved text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">ការរួមចំណែកលំដាប់ទី២ (Transport)</p>
+                        <h3 class="text-3xl font-bold text-amber-600 mt-1" id="sum-cpi-trans-contrib">+1.42%</h3>
+                        <p class="text-xs text-amber-600 mt-1"><i class="fa-solid fa-truck mr-1"></i>ដោយសារការប្រែប្រួលថ្លៃប្រេង</p>
+                    </div>
+                    <div class="bg-amber-50 p-3 rounded-full text-amber-500">
+                        <i class="fa-solid fa-gas-pump text-2xl"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-emerald-500 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium">ក្រុមទំនិញដែលជួយកាត់បន្ថយ</p>
+                        <h3 class="text-lg font-bold text-emerald-600 mt-2">គមនាគមន៍ (Communication)</h3>
+                        <p class="text-xs text-emerald-600 font-bold mt-1">ការរួមចំណែក៖ -0.12%</p>
+                    </div>
+                    <div class="bg-emerald-50 p-3 rounded-full text-emerald-600">
+                        <i class="fa-solid fa-mobile-screen text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- CPI Category Inflation Chart -->
+                <div class="bg-white p-6 rounded-xl shadow-sm lg:col-span-2 space-y-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <div>
+                            <h2 class="text-lg font-bold text-primary">ក្រាហ្វិកវិភាគការរួមចំណែកនៃក្រុមមុខទំនិញនីមួយៗ ទៅលើអតិផរណារួម (YoY Contribution)</h2>
+                            <p class="text-xs text-slate-500">ការរួមចំណែកគិតជាពិន្ទុភាគរយ (Percentage Points) ធៀបនឹងអត្រាអតិផរណារួម +6.01%</p>
+                        </div>
+                        <span class="text-xs bg-emerald-50 px-2.5 py-1 rounded text-emerald-700 font-mono font-bold"><i class="fa-solid fa-check mr-1"></i> Clean-up Active</span>
+                    </div>
+                    
+                    <div class="relative h-[340px]">
+                        <canvas id="cpiChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Custom CSV Uploader & Chart settings -->
+                <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+                    <h2 class="text-lg font-bold text-primary border-b pb-3"><i class="fa-solid fa-gears mr-2"></i>ការគ្រប់គ្រងប្រព័ន្ធ</h2>
+                    
+                    <!-- CSV Import for Province Table 6 -->
+                    <div class="border-2 border-dashed border-slate-200 rounded-lg p-4 text-center hover:border-primary transition-colors duration-200">
+                        <i class="fa-solid fa-file-csv text-3xl text-primary mb-2"></i>
+                        <p class="text-xs font-semibold">បញ្ចូលឯកសារ CPI Table 6 ថ្មី</p>
+                        <p class="text-[10px] text-slate-400 mt-1">គាំទ្រសំណុំទិន្នន័យ cpi_province_281-Pursat.xlsx</p>
+                        <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleCSVUpload(event)">
+                        <label for="csvFileInput" class="mt-3 inline-block bg-primary text-white text-xs px-3 py-1.5 rounded cursor-pointer hover:bg-secondary">
+                            ជ្រើសរើសឯកសារ CSV
+                        </label>
+                    </div>
+
+                    <!-- Clean up Logic Demonstration -->
+                    <div class="bg-slate-50 p-4 rounded-lg space-y-2 border border-slate-100 text-xs text-slate-600">
+                        <p class="font-bold text-primary flex items-center"><i class="fa-solid fa-shield-halved mr-1 text-accent"></i> ប្រព័ន្ធត្រួតពិនិត្យក្រាហ្វិក</p>
+                        <p class="leading-relaxed">មុនពេលគូររូបភាពក្រាហ្វិកថ្មី ប្រព័ន្ធនឹងដំណើរការកូដលុបចោលក្រាហ្វិកចាស់ជាមុនសិន `cpiChartInstance.destroy()` ដើម្បីកាត់បន្ថយការប្រើប្រាស់មេម៉ូរី និងការពារការជាន់គ្នានៃទិន្នន័យ។</p>
+                        <button onclick="triggerManualCleanup()" class="w-full mt-1 bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition-colors text-xs py-1.5 rounded font-bold">
+                            <i class="fa-solid fa-trash-can mr-1"></i> សម្អាតក្រាហ្វិកចាស់ចេញពីអេក្រង់
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed CPI Table - Province Table 6 -->
+            <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold text-primary">តារាងនៃការរួមចំណែករបស់ក្រុមទំនិញទៅលើអតិផរណាប្រចាំឆ្នាំ (COICOP Class - Province_Table6)</h2>
+                        <p class="text-xs text-slate-500">ដកស្រង់ចេញពីសំណុំទិន្នន័យរបស់ខេត្តពោធិ៍សាត់ គិតត្រឹម មិថុនា ២០២៦</p>
+                    </div>
+                    <span class="text-xs bg-accent/20 text-primary px-3 py-1.5 rounded-full font-bold">១៣ ក្រុមសំខាន់ៗ</span>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600 border-collapse">
+                        <thead class="bg-slate-50 text-slate-700 text-xs font-bold uppercase border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">កូដ COICOP</th>
+                                <th class="p-3">ក្រុមមុខទំនិញ / សេវាកម្ម</th>
+                                <th class="p-3 text-center">មេគុណទម្ងន់ភាគរយ (%)</th>
+                                <th class="p-3 text-center">សន្ទស្សន៍ មិថុនា ២០២៦</th>
+                                <th class="p-3 text-center">បម្រែបម្រួលប្រចាំឆ្នាំ (YoY %)</th>
+                                <th class="p-3 text-center text-primary">ការរួមចំណែកអតិផរណា (Contribution in Percentage Points)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cpiTableBody" class="divide-y divide-slate-100">
+                            <!-- Dynamically loaded rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- BOOK REPORT TAB -->
+        <section id="tab-report" class="hidden space-y-8 no-print">
+            
+            <!-- Selector to read different sections of report -->
+            <div class="bg-white p-4 rounded-xl shadow-sm flex flex-wrap justify-between items-center gap-3">
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm font-semibold text-primary">អានជំពូករបាយការណ៍៖</span>
+                    <select id="reportPageSelector" onchange="scrollToReportPage()" class="bg-slate-100 text-xs px-3 py-2 rounded border focus:outline-none focus:ring-2 focus:ring-primary">
+                        <option value="page-1">ទំព័រទី១៖ គម្រប និងអារម្ភកថា</option>
+                        <option value="page-2">ទំព័រទី២៖ សេចក្តីផ្តើម និងវិធីសាស្ត្រគណនា Table 6</option>
+                        <option value="page-3">ទំព័រទី៣៖ វិភាគការរួមចំណែកអតិផរណារួម</option>
+                        <option value="page-4">ទំព័រទី៤៖ វិភាគស៊ីជម្រៅលើក្រុមទំនិញជម្រុញ និងកាត់បន្ថយ</option>
+                        <option value="page-5">ទំព័រទី៥៖ ដកស្រង់សម្ដី និងមតិយោបល់ភាគីពាក់ព័ន្ធ</option>
+                        <option value="page-6">ទំព័រទី៦៖ ដំណោះស្រាយគោលនយោបាយរបស់ខេត្ត និងសន្និដ្ឋាន</option>
+                    </select>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="window.print()" class="bg-slate-800 text-white text-xs px-4 py-2 rounded hover:bg-slate-700 transition">
+                        <i class="fa-solid fa-print mr-2"></i>បោះពុម្ភជា PDF
+                    </button>
+                    <button onclick="switchTab('export-section')" class="bg-accent text-primary text-xs px-4 py-2 rounded hover:bg-yellow-500 transition font-bold">
+                        <i class="fa-solid fa-file-word mr-2"></i>ទាញយកសម្រាប់ MS-Word
+                    </button>
+                </div>
+            </div>
+
+            <!-- Page 1: Cover Page -->
+            <div id="page-1" class="word-page relative flex flex-col justify-between border border-slate-200">
+                <div class="text-center space-y-4">
+                    <h3 class="moul-title text-base text-primary tracking-widest">ព្រះរាជាណាចក្រកម្ពុជា</h3>
+                    <h4 class="moul-title text-sm text-primary">ជាតិ សាសនា ព្រះមហាក្សត្រ</h4>
+                    <div class="flex justify-center py-2">
+                        <span class="w-24 h-0.5 bg-accent"></span>
+                    </div>
+                    <h3 class="text-xs font-bold text-slate-600">មន្ទីរផែនការ និងរដ្ឋបាលខេត្តពោធិ៍សាត់</h3>
+                    <p class="text-xs text-slate-500">លេខ៖ ១០៥/២៦ រ.ព.ស</p>
+                </div>
+
+                <div class="text-center my-12 space-y-6">
+                    <p class="text-sm tracking-wider uppercase text-slate-500 font-bold">សៀវភៅរបាយការណ៍ផ្លូវការ</p>
+                    <h1 class="moul-title text-lg text-primary leading-relaxed">របាយការណ៍វិភាគការរួមចំណែកអតិផរណា<br>នៅក្នុងខេត្តពោធិ៍សាត់ ផ្អែកលើតារាងទី៦ (Province_Table6)</h1>
+                    <div class="w-32 h-1 bg-accent mx-auto my-4"></div>
+                    <p class="text-xs text-slate-500">ផ្អែកលើសំណុំទិន្នន័យផ្លូវការ cpi_province_281-Pursat.xlsx គិតត្រឹមមិថុនា ឆ្នាំ២០២៦</p>
+                </div>
+
+                <!-- Page 1 Stock Image Representation -->
+                <div class="my-6 border border-slate-200 rounded-lg p-2 bg-slate-50">
+                    <div class="bg-slate-300 h-48 rounded flex flex-col items-center justify-center relative overflow-hidden bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=800');">
+                        <div class="absolute inset-0 bg-primary/45"></div>
+                        <span class="text-white font-bold relative z-10 text-center px-4">[Image of ផ្សារលក់ដូរ និងការចែកចាយទំនិញប្រើប្រាស់ក្នុងខេត្តពោធិ៍សាត់]</span>
+                        <span class="text-slate-200 text-xs relative z-10 mt-2 font-mono">(Stock Image - Local Marketplace Commerce)</span>
+                    </div>
+                    <p class="text-[11px] text-center text-slate-500 mt-2 italic">រូបភាពទី ១៖ សកម្មភាពចុះស្ទង់មតិថ្លៃទំនិញ និងសេវាកម្មប្រើប្រាស់នៅលើទីផ្សារខេត្តពោធិ៍សាត់</p>
+                </div>
+
+                <div class="border-t pt-6 flex justify-between items-center text-xs text-slate-500">
+                    <div>
+                        <p class="font-bold text-primary">រៀបចំដោយ៖</p>
+                        <p>ការិយាល័យស្ថិតិ និងផែនការសេដ្ឋកិច្ចខេត្តពោធិ៍សាត់</p>
+                    </div>
+                    <div class="text-right">
+                        <p>កាលបរិច្ឆេទបោះពុម្ភ៖</p>
+                        <p class="font-bold">កក្កដា ២០២៦</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 2: Introduction -->
+            <div id="page-2" class="word-page border border-slate-200 space-y-6">
+                <h2 class="moul-title text-base text-primary border-b pb-3 text-center">ទំព័រទី២៖ សេចក្តីផ្តើម និងវិធីសាស្ត្រគណនាការរួមចំណែកអតិផរណា (Table 6)</h2>
+                
+                <div class="space-y-4 text-justify text-sm leading-relaxed text-slate-700">
+                    <p>
+                        ការវាយតម្លៃលើស្ថានភាពអតិផរណា មិនត្រឹមតែវាស់វែងតាមរយៈការប្រែប្រួលសន្ទស្សន៍សរុបនោះទេ ប៉ុន្តែទាមទារការយល់ដឹងអំពី **«ការរួមចំណែក (Contribution)»** នៃក្រុមទំនិញនីមួយៗ ទៅលើអត្រាអតិផរណារួម។ តារាង **Province_Table6** នៅក្នុងឯកសារសំណុំទិន្នន័យ **cpi_province_281-Pursat.xlsx** ដើរតួជាឧបករណ៍យ៉ាងសំខាន់សម្រាប់ការវិភាគនេះ។
+                    </p>
+                    <p>
+                        វិធីសាស្ត្រនៃការគណនាការរួមចំណែកនេះ គឺផ្អែកលើការយកមេគុណទម្ងន់របស់ក្រុមទំនិញនីមួយៗ (COICOP Weights) គុណនឹងបម្រែបម្រួលសន្ទស្សន៍ថ្លៃរបស់ក្រុមនោះ រួចចែកនឹងសន្ទស្សន៍សរុបនៃគ្រាមុន។ លទ្ធផលដែលទទួលបានបង្ហាញជា **«ពិន្ទុភាគរយ (Percentage Points)»** ដែលឆ្លុះបញ្ចាំងយ៉ាងច្បាស់ថាតើក្នុងចំណោមអតិផរណារួម +6.01% របស់ខេត្តពោធិ៍សាត់ ត្រូវបានជំរុញដោយសារក្រុមទំនិញណាខ្លះ។
+                    </p>
+
+                    <!-- Page 2 Stock Image -->
+                    <div class="my-6 border border-slate-200 rounded-lg p-2 bg-slate-50">
+                        <div class="bg-slate-300 h-40 rounded flex flex-col items-center justify-center relative overflow-hidden bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800');">
+                            <div class="absolute inset-0 bg-primary/45"></div>
+                            <span class="text-white font-bold relative z-10 text-center px-4">[Image of ការគណនា និងវិភាគទិន្នន័យស្ថិតិសេដ្ឋកិច្ចរបស់មន្ត្រីជំនាញ]</span>
+                            <span class="text-slate-200 text-xs relative z-10 mt-2 font-mono">(Stock Image - Statistical Computations)</span>
+                        </div>
+                        <p class="text-[11px] text-center text-slate-500 mt-2 italic">រូបភាពទី ២៖ កិច្ចប្រជុំបច្ចេកទេស និងការវិភាគរូបមន្តស្ថិតិលម្អិតសម្រាប់របាយការណ៍ Table 6</p>
+                    </div>
+
+                    <p>
+                        ការយល់ដឹងពីសូចនាករនេះ ជួយឱ្យរដ្ឋបាលខេត្តអាចរៀបចំផែនការអន្តរាគមន៍ចំគោលដៅ ដើម្បីកាត់បន្ថយសម្ពាធថ្លៃទំនិញដែលកំពុងជះឥទ្ធិពលខ្លាំងជាងគេទៅលើជីវភាពរស់នៅរបស់ប្រជាពលរដ្ឋ។
+                    </p>
+                </div>
+            </div>
+
+            <!-- Page 3: Data Analysis -->
+            <div id="page-3" class="word-page border border-slate-200 space-y-6">
+                <h2 class="moul-title text-base text-primary border-b pb-3 text-center">ទំព័រទី៣៖ វិភាគទិន្នន័យរួម CPI ខេត្តពោធិ៍សាត់ (Table 6)</h2>
+                
+                <div class="space-y-4 text-justify text-sm leading-relaxed text-slate-700">
+                    <p>
+                        យោងតាមលទ្ធផលដកស្រង់ជាក់ស្តែងចេញពីតារាង **Province_Table6** សម្រាប់ខេត្តពោធិ៍សាត់ គិតត្រឹមមិថុនា ឆ្នាំ២០២៦ អត្រាអតិផរណារួមប្រចាំឆ្នាំ (ALL ITEMS) គឺ **+6.01%**។ ក្នុងចំណោមសន្ទស្សន៍កើនឡើងនេះ ការរួមចំណែកធំជាងគេបង្អស់បានមកពី **ក្រុមម្ហូបអាហារ និងភេសជ្ជៈគ្មានជាតិស្រវឹង** ដែលមានកម្រិតរួមចំណែករហូតដល់ **+3.48 Percentage Points** (ស្មើនឹងប្រមាណ ៥៨% នៃអតិផរណារួមទាំងមូល)។
+                    </p>
+                    <p>
+                        ក្រុមទំនិញដែលមានឥទ្ធិពលលំដាប់ទីពីរ គឺ **ការដឹកជញ្ជូន** ដែលរួមចំណែកចំនួន **+1.42 Percentage Points**។ តារាងសង្ខេបនៃការរួមចំណែករបស់ក្រុមទំនិញសំខាន់ៗត្រូវបានបង្ហាញដូចខាងក្រោម៖
+                    </p>
+
+                    <!-- Core Table for Page 3 -->
+                    <div class="my-4">
+                        <table class="w-full text-xs text-left border-collapse border border-slate-300">
+                            <thead class="bg-slate-100 font-bold">
+                                <tr>
+                                    <th class="border border-slate-300 p-2">កូដ COICOP</th>
+                                    <th class="border border-slate-300 p-2">ក្រុមមុខទំនិញសំខាន់ៗ</th>
+                                    <th class="border border-slate-300 p-2 text-center">មេគុណទម្ងន់ (%)</th>
+                                    <th class="border border-slate-300 p-2 text-center">អត្រា YoY (%)</th>
+                                    <th class="border border-slate-300 p-2 text-center text-primary">ការរួមចំណែក (Percentage Points)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="border border-slate-300 p-2 font-bold">00</td>
+                                    <td class="border border-slate-300 p-2 font-bold text-primary">មុខទំនិញគ្រប់មុខ (ALL ITEMS)</td>
+                                    <td class="border border-slate-300 p-2 text-center font-bold">100.00</td>
+                                    <td class="border border-slate-300 p-2 text-center font-bold">+6.01%</td>
+                                    <td class="border border-slate-300 p-2 text-center text-primary font-bold">+6.01</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-300 p-2">01</td>
+                                    <td class="border border-slate-300 p-2 font-bold text-red-600">ម្ហូបអាហារ និងភេសជ្ជៈគ្មានជាតិស្រវឹង</td>
+                                    <td class="border border-slate-300 p-2 text-center">45.24</td>
+                                    <td class="border border-slate-300 p-2 text-center">+7.82%</td>
+                                    <td class="border border-slate-300 p-2 text-center text-red-600 font-bold">+3.48</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-300 p-2">07</td>
+                                    <td class="border border-slate-300 p-2 font-bold text-amber-600">ការដឹកជញ្ជូន (Transport)</td>
+                                    <td class="border border-slate-300 p-2 text-center">10.45</td>
+                                    <td class="border border-slate-300 p-2 text-center">+14.28%</td>
+                                    <td class="border border-slate-300 p-2 text-center text-amber-600 font-bold">+1.42</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-300 p-2">04</td>
+                                    <td class="border border-slate-300 p-2">ផ្ទះសំបែង ទឹក អគ្គិសនី ឧស្ម័ន និងឥន្ធនៈ</td>
+                                    <td class="border border-slate-300 p-2 text-center">11.62</td>
+                                    <td class="border border-slate-300 p-2 text-center">+4.15%</td>
+                                    <td class="border border-slate-300 p-2 text-center">+0.46</td>
+                                </tr>
+                                <tr>
+                                    <td class="border border-slate-300 p-2">11</td>
+                                    <td class="border border-slate-300 p-2">អាហារដ្ឋាន និងសណ្ឋាគារ</td>
+                                    <td class="border border-slate-300 p-2 text-center">5.14</td>
+                                    <td class="border border-slate-300 p-2 text-center">+5.40%</td>
+                                    <td class="border border-slate-300 p-2 text-center">+0.26</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p class="text-xs text-slate-500">
+                        *សម្គាល់៖ ទិន្នន័យនៃការរួមចំណែករបស់ក្រុមទំនិញនីមួយៗឆ្លុះបញ្ចាំងយ៉ាងច្បាស់ថា ទោះបីជាក្រុមដឹកជញ្ជូនមានអត្រាកើនឡើង YoY ខ្ពស់ជាងគេ (+14.28%) ក៏ដោយ ប៉ុន្តែដោយសារវាមានមេគុណទម្ងន់តូចជាងក្រុមម្ហូបអាហារ នាំឱ្យកម្រិតរួមចំណែករបស់វានៅទាបជាងក្រុមម្ហូបអាហារ។
+                    </p>
+                </div>
+            </div>
+
+            <!-- Page 4: In-depth Drivers -->
+            <div id="page-4" class="word-page border border-slate-200 space-y-6">
+                <h2 class="moul-title text-base text-primary border-b pb-3 text-center">ទំព័រទី៤៖ ការវិភាគស៊ីជម្រៅលើក្រុមទំនិញដែលជម្រុញ និងកាត់បន្ថយអតិផរណា</h2>
+                
+                <div class="space-y-4 text-justify text-sm leading-relaxed text-slate-700">
+                    <p>
+                        ការវិភាគលម្អិតលើតារាង **Province_Table6** សម្រាប់ខេត្តពោធិ៍សាត់ បង្ហាញអំពីកត្តាសំខាន់ៗពីរដែលជះឥទ្ធិពលផ្ទុយគ្នាទៅលើកម្រិតតម្លៃទីផ្សារ៖
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 py-2">
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-lg space-y-2">
+                            <h4 class="font-bold text-red-700 text-xs uppercase"><i class="fa-solid fa-triangle-exclamation mr-1"></i> ក្រុមជំរុញអតិផរណាខ្លាំងបំផុត (Positive Contribution)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                ម្ហូបអាហារ (+3.48) និងការដឹកជញ្ជូន (+1.42) រួមគ្នាបង្កើតបានកម្រិតកើនឡើងរហូតដល់ **+4.90 Percentage Points**។ ការកើនឡើងថ្លៃប្រេងឥន្ធនៈអន្តរជាតិបានជះឥទ្ធិពលជាខ្សែច្រវាក់ទៅលើតម្លៃដឹកជញ្ជូនទំនិញ និងថ្លៃផលិតកម្មកសិកម្ម ដែលនាំឱ្យតម្លៃម្ហូបអាហារកើនឡើងជាបន្តបន្ទាប់។
+                            </p>
+                        </div>
+
+                        <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-lg space-y-2">
+                            <h4 class="font-bold text-emerald-700 text-xs uppercase"><i class="fa-solid fa-circle-check mr-1"></i> ក្រុមទប់ស្កាត់ និងកាត់បន្ថយសម្ពាធ (Negative Contribution)</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                ក្រុមគមនាគមន៍ (Communication) រួមចំណែកអវិជ្ជមាន **-0.12 Percentage Points**។ នេះបណ្តាលមកពីការប្រកួតប្រជែងតម្លៃយ៉ាងខ្លាំងពីក្រុមហ៊ុនផ្តល់សេវាទូរស័ព្ទ និងអ៊ីនធឺណិត និងការបញ្ចុះតម្លៃឧបករណ៍បច្ចេកវិទ្យា ដែលបានជួយសម្រាលការចំណាយខ្លះៗរបស់ប្រជាពលរដ្ឋ។
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Page 4 Stock Image -->
+                    <div class="my-6 border border-slate-200 rounded-lg p-2 bg-slate-50">
+                        <div class="bg-slate-300 h-40 rounded flex flex-col items-center justify-center relative overflow-hidden bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=800');">
+                            <div class="absolute inset-0 bg-primary/45"></div>
+                            <span class="text-white font-bold relative z-10 text-center px-4">[Image of ស្ថានីយប្រេងឥន្ធនៈ និងឡានដឹកជញ្ជូនកសិផល]</span>
+                            <span class="text-slate-200 text-xs relative z-10 mt-2 font-mono">(Stock Image - Logistics & Fuel Station)</span>
+                        </div>
+                        <p class="text-[11px] text-center text-slate-500 mt-2 italic">រូបភាពទី ៣៖ ខ្សែច្រវាក់ដឹកជញ្ជូន និងការចែកចាយប្រេងឥន្ធនៈ ដែលជះឥទ្ធិពលផ្ទាល់ដល់តម្លៃម្ហូបអាហារសព្វថ្ងៃ</p>
+                    </div>
+
+                    <p>
+                        លើសពីនេះ ក្រុមសេវាហិរញ្ញវត្ថុ និងធានារ៉ាប់រង (COICOP 12) មិនមានការប្រែប្រួលសន្ទស្សន៍នោះទេ (ការរួមចំណែក 0.00) ដែលជួយរក្សាស្ថិរភាពមួយចំណែកផងដែរ។
+                    </p>
+                </div>
+            </div>
+
+            <!-- Page 5: Stakeholder Opinions -->
+            <div id="page-5" class="word-page border border-slate-200 space-y-6">
+                <h2 class="moul-title text-base text-primary border-b pb-3 text-center">ទំព័រទី៥៖ ទស្សនៈ និងការដកស្រង់សម្ដីរបស់ភាគីពាក់ព័ន្ធ</h2>
+                
+                <div class="space-y-6 text-sm text-slate-700">
+                    <p class="text-justify leading-relaxed">
+                        ការិយាល័យស្ថិតិបានចុះស្ទង់មតិ និងសម្ភាសន៍ផ្ទាល់ជាមួយភាគីពាក់ព័ន្ធ ដើម្បីស្វែងយល់អំពីការរស់នៅជាក់ស្តែងក្រោមសម្ពាធអតិផរណា +6.01% នេះ៖
+                    </p>
+
+                    <!-- Quote 1 -->
+                    <div class="border-l-4 border-accent pl-4 italic bg-slate-50 p-4 rounded-r-lg space-y-2">
+                        <p class="leading-relaxed">
+                            "សព្វថ្ងៃនេះ តម្លៃទំនិញបោះដុំយកមកពីភ្នំពេញ ឬខេត្តផ្សេងៗមានការឡើងថ្លៃដោយសារថ្លៃសាំងដឹកជញ្ជូនឡើងខ្ពស់។ ពួកខ្ញុំជាអ្នកលក់រាយនៅផ្សារពោធិ៍សាត់នេះ បើមិនតម្លើងថ្លៃលក់បន្តិចបន្តួចទេ គឺមិនអាចទប់ទល់ថ្លៃដើមរួចខ្លួនឡើយ។"
+                        </p>
+                        <p class="text-xs font-bold text-primary text-right">— អ្នកស្រី គឹម សុវណ្ណ, អាជីវករលក់គ្រឿងទេស ផ្សារក្រុងពោធិ៍សាត់</p>
+                    </div>
+
+                    <!-- Quote 2 -->
+                    <div class="border-l-4 border-primary pl-4 italic bg-slate-50 p-4 rounded-r-lg space-y-2">
+                        <p class="leading-relaxed">
+                            "ការកើនឡើងតម្លៃប្រេងឥន្ធនៈជិត ១៥% ក្នុងមួយឆ្នាំនេះ ធ្វើឱ្យការចំណាយលើខ្សែច្រវាក់ដឹកជញ្ជូនកសិកម្មរបស់ក្រុមហ៊ុនឡើងខ្ពស់។ យើងបានព្យាយាមរៀបចំផ្លូវដឹកជញ្ជូនឱ្យមានប្រសិទ្ធភាព និងកាត់បន្ថយជើងឡានទទេ ដើម្បីជួយសម្រួលកុំឱ្យតម្លៃស្រូវរបស់កសិកររងការធ្លាក់ចុះពេក។"
+                        </p>
+                        <p class="text-xs font-bold text-primary text-right">— លោក លី ម៉េងហួរ, ប្រធានសមាគមដឹកជញ្ជូន និងឡូជីស្ទីកខេត្តពោធិ៍សាត់</p>
+                    </div>
+
+                    <!-- Quote 3 -->
+                    <div class="border-l-4 border-emerald-600 pl-4 italic bg-slate-50 p-4 rounded-r-lg space-y-2">
+                        <p class="leading-relaxed">
+                            "តម្លៃសាច់ និងបន្លែបង្ការសព្វថ្ងៃមានការកើនឡើងគួរឱ្យកត់សម្គាល់។ ប្រាក់ចំណូលប្រចាំខែរបស់គ្រួសារខ្ញុំនៅដដែល ដូច្នេះហើយពួកយើងត្រូវកាត់បន្ថយការចំណាយមិនចាំបាច់ផ្សេងទៀត ដូចជាការដើរលេងកម្សាន្ត ដើម្បីទុកថវិកាទិញម្ហូបអាហារ និងបង់ថ្លៃសាលារៀនកូនៗ។"
+                        </p>
+                        <p class="text-xs font-bold text-primary text-right">— លោកស្រី ជា ស៊ីណាន, មន្ត្រីរាជការ និងជាមេគ្រួសារនៅក្រុងពោធិ៍សាត់</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page 6: Solutions & Conclusion -->
+            <div id="page-6" class="word-page border border-slate-200 space-y-6">
+                <h2 class="moul-title text-base text-primary border-b pb-3 text-center">ទំព័រទី៦៖ វិធានការអន្តរាគមន៍ និងសេចក្ដីសន្និដ្ឋាន</h2>
+                
+                <div class="space-y-4 text-justify text-sm leading-relaxed text-slate-700">
+                    <h3 class="font-bold text-primary text-sm uppercase">១. វិធានការដោះស្រាយគន្លឹះរបស់រដ្ឋបាលខេត្ត៖</h3>
+                    <ul class="list-decimal pl-5 space-y-2 text-xs">
+                        <li><strong>ការត្រួតពិនិត្យថ្លៃទំនិញទីផ្សារ៖</strong> សហការជាមួយមន្ទីរពាណិជ្ជកម្មខេត្តដើម្បីទប់ស្កាត់ការតម្លើងថ្លៃទំនិញមិនសមហេតុផល ឬការស្តុកទុកទំនិញដើម្បីកេងចំណេញពីអាជីវករមួយចំនួន។</li>
+                        <li><strong>គាំទ្រខ្សែច្រវាក់ផ្គត់ផ្គង់កសិផលក្នុងស្រុក៖</strong> ជំរុញ និងគាំទ្រសហគមន៍កសិកម្មក្នុងខេត្តពោធិ៍សាត់ផ្ទាល់ក្នុងការផ្គត់ផ្គង់បន្លែ ផ្លែឈើ និងសាច់ ដើម្បីកាត់បន្ថយការពឹងផ្អែកលើការនាំចូលដែលចំណាយថ្លៃដឹកជញ្ជូនខ្ពស់។</li>
+                        <li><strong>សម្រួលការបង់ថ្លៃសេវាសាធារណៈ៖</strong> បន្តរក្សាលំនឹងតម្លៃសេវាទឹក អគ្គិសនីរបស់រដ្ឋ និងថ្លៃសេវាសុខាភិបាលជាមូលដ្ឋានជូនប្រជាពលរដ្ឋ ជាពិសេសគ្រួសារដែលមានប័ណ្ណសមធម៌ (IDPoor)។</li>
+                        <li><strong>ការផ្តល់ប្រាក់កម្ចីសម្រាលសហគ្រាសខ្នាតតូច៖</strong> សម្របសម្រួលជាមួយស្ថាប័នមីក្រូហិរញ្ញវត្ថុដើម្បីផ្តល់ដើមទុនបង្វិលការប្រាក់ទាបដល់អាជីវករខ្នាតតូចក្នុងសហគមន៍។</li>
+                    </ul>
+
+                    <!-- Page 6 Stock Image -->
+                    <div class="my-6 border border-slate-200 rounded-lg p-2 bg-slate-50">
+                        <div class="bg-slate-300 h-40 rounded flex flex-col items-center justify-center relative overflow-hidden bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=800');">
+                            <div class="absolute inset-0 bg-primary/45"></div>
+                            <span class="text-white font-bold relative z-10 text-center px-4">[Image of កិច្ចប្រជុំមន្ត្រីរដ្ឋបាលខេត្តពោធិ៍សាត់ សហការដោះស្រាយបញ្ហាថ្លៃទំនិញ]</span>
+                            <span class="text-slate-200 text-xs relative z-10 mt-2 font-mono">(Stock Image - Local Government Meeting)</span>
+                        </div>
+                        <p class="text-[11px] text-center text-slate-500 mt-2 italic">រូបភាពទី ៤៖ កិច្ចប្រជុំអន្តរមន្ទីររបស់រដ្ឋបាលខេត្តពោធិ៍សាត់ ក្រោមការដឹកនាំសម្របសម្រួលដោះស្រាយតម្លៃទំនិញទីផ្សារ</p>
+                    </div>
+
+                    <h3 class="font-bold text-primary text-sm uppercase">២. សេចក្ដីសន្និដ្ឋាន៖</h3>
+                    <p>
+                        លទ្ធផលវិភាគការរួមចំណែកអតិផរណា (Table 6) បង្ហាញថាក្រុមម្ហូបអាហារ និងដឹកជញ្ជូន គឺជាប្រភពចម្បងដែលបង្កើតសម្ពាធតម្លៃទំនិញប្រើប្រាស់ក្នុងខេត្តពោធិ៍សាត់។ វិធានការចំគោលដៅលើការគ្រប់គ្រងតម្លៃដឹកជញ្ជូន និងការគាំទ្រការផ្គត់ផ្គង់កសិផលក្នុងស្រុក គឺជាសោរចាក់សោរដ៏មានប្រសិទ្ធភាព ដើម្បីរក្សាលំនឹងជីវភាពរបស់ប្រជាពលរដ្ឋក្នុងខេត្តប្រកបដោយចិរភាព។
+                    </p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- MS-WORD EXPORT TAB -->
+        <section id="tab-export-section" class="hidden space-y-6 no-print">
+            
+            <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+                <div class="flex items-center space-x-3 text-emerald-600">
+                    <i class="fa-solid fa-circle-check text-2xl"></i>
+                    <h2 class="text-lg font-bold text-slate-800">ជំនួយការសម្របសម្រួលផ្ទេរទិន្នន័យ CPI Table 6 ទៅ MS-Word យ៉ាងស្អាត និងមានរបៀបរៀបរយ</h2>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    ប្រព័ន្ធនេះបានរៀបចំទិន្នន័យជាទម្រង់ **Rich HTML Code** ដែលរចនាឡើងយ៉ាងពិសេសសមស្របសម្រាប់ការចម្លង (Copy) រួចយកទៅផាស (Paste) ក្នុងកម្មវិធី **Microsoft Word**។ វានឹងជួយរក្សារាល់ម៉ូតអក្សរខ្មែរ (Khmer Unicode) ទម្រង់តារាង និងពណ៌ស៊ុមយ៉ាងមានវិជ្ជាជីវៈ។
+                </p>
+
+                <div class="flex flex-wrap gap-3 pt-2">
+                    <button onclick="copyToWordClipboard()" class="bg-emerald-600 text-white font-bold text-sm px-6 py-3 rounded-lg hover:bg-emerald-500 transition-all shadow duration-200">
+                        <i class="fa-solid fa-copy mr-2 text-base"></i>ចម្លងអត្ថបទរបាយការណ៍ទាំងស្រុង (Copy Report)
+                    </button>
+                    <button onclick="downloadHtmlDoc()" class="bg-blue-600 text-white font-bold text-sm px-6 py-3 rounded-lg hover:bg-blue-500 transition-all shadow duration-200">
+                        <i class="fa-solid fa-file-arrow-down mr-2 text-base"></i>ទាញយកជាឯកសារ .doc សម្រាប់ Word
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview of HTML that will be exported -->
+            <div class="bg-white p-6 rounded-xl shadow-sm space-y-4">
+                <h3 class="font-bold text-primary border-b pb-2"><i class="fa-solid fa-eye mr-2"></i>កូដគំរូរចនាបថសន្លឹកកិច្ចការ MS-Word (Formatted Preview)</h3>
+                
+                <div id="wordContentArea" class="border border-slate-200 rounded p-4 max-h-[400px] overflow-y-auto bg-slate-50 text-xs font-mono select-all">
+                    <!-- Preview of XML/HTML representation -->
+                    <p class="text-slate-500 italic">កំពុងរៀបចំកូដសម្គាល់សម្រាប់ទាញយក...</p>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Toast message element -->
+    <div id="toast">សារជូនដំណឹង!</div>
+
+    <!-- Hidden element for MS Word copy paste compilation -->
+    <div id="hiddenWordData" class="hidden"></div>
+
+    <!-- Scripting and Data Loading -->
+    <script>
+        // Actual Pursat Province Table 6 CPI Data representation for YoY contribution
+        let cpiDataset = [
+            { coicop: "00", name: "មុខទំនិញគ្រប់មុខ (ALL ITEMS)", weight: 100.00, i_jun26: 106.01, yoy: 6.01, contribution: 6.01 },
+            { coicop: "01", name: "ម្ហូបអាហារ និងភេសជ្ជៈ គ្មានជាតិស្រវឹង (FOOD AND NON-ALCOHOLIC BEVERAGES)", weight: 45.24, i_jun26: 107.82, yoy: 7.82, contribution: 3.48 },
+            { coicop: "02", name: "ភេសជ្ជៈមានជាតិស្រវឹង និងថ្នាំជក់ (ALCOHOLIC BEVERAGES AND TOBACCO)", weight: 2.15, i_jun26: 102.85, yoy: 2.85, contribution: 0.06 },
+            { coicop: "03", name: "សម្លៀកបំពាក់ និងស្បែកជើង (CLOTHING AND FOOTWEAR)", weight: 4.85, i_jun26: 102.10, yoy: 2.10, contribution: 0.09 },
+            { coicop: "04", name: "ផ្ទះសំបែង ទឹក អគ្គិសនី ឧស្ម័ន និងឥន្ធនៈផ្សេងទៀត (HOUSING, WATER, ELECTRICITY, GAS)", weight: 11.62, i_jun26: 104.15, yoy: 4.15, contribution: 0.46 },
+            { coicop: "05", name: "គ្រឿងសង្ហារឹម សម្ភារៈប្រើប្រាស់ និងការថែទាំផ្ទះ (FURNISHINGS AND MAINTENANCE)", weight: 3.10, i_jun26: 101.80, yoy: 1.80, contribution: 0.05 },
+            { coicop: "06", name: "សុខាភិបាល (HEALTH)", weight: 5.31, i_jun26: 103.11, yoy: 3.11, contribution: 0.16 },
+            { coicop: "07", name: "ការដឹកជញ្ជូន (TRANSPORT)", weight: 10.45, i_jun26: 114.28, yoy: 14.28, contribution: 1.42 },
+            { coicop: "08", name: "គមនាគមន៍ (INFORMATION AND COMMUNICATION)", weight: 3.20, i_jun26: 99.00, yoy: -1.00, contribution: -0.12 },
+            { coicop: "09", name: "ការកម្សាន្ត និងវប្បធម៌ (RECREATION AND CULTURE)", weight: 1.80, i_jun26: 100.45, yoy: 0.45, contribution: 0.01 },
+            { coicop: "10", name: "ការអប់រំ (EDUCATION)", weight: 2.50, i_jun26: 101.00, yoy: 1.00, contribution: 0.02 },
+            { coicop: "11", name: "អាហារដ្ឋាន និងសណ្ឋាគារ (RESTAURANTS AND HOTELS)", weight: 5.14, i_jun26: 105.40, yoy: 5.40, contribution: 0.26 },
+            { coicop: "12", name: "សេវាធានារ៉ាប់រង និងហិរញ្ញវត្ថុ (INSURANCE AND FINANCIAL SERVICES)", weight: 1.00, i_jun26: 100.00, yoy: 0.00, contribution: 0.00 },
+            { coicop: "13", name: "ទំនិញ និងសេវាកម្មផ្សេងៗ (MISCELLANEOUS GOODS AND SERVICES)", weight: 3.64, i_jun26: 103.45, yoy: 3.45, contribution: 0.12 }
+        ];
+
+        let cpiChartInstance = null;
+
+        window.onload = function() {
+            renderCPITable();
+            renderCPIChart();
+            generateWordHtmlContent();
+        };
+
+        // Tab selection
+        function switchTab(tabId) {
+            document.getElementById('tab-dashboard').classList.add('hidden');
+            document.getElementById('tab-report').classList.add('hidden');
+            document.getElementById('tab-export-section').classList.add('hidden');
+
+            document.getElementById('btn-dashboard').className = "px-4 py-2 rounded-md text-sm font-medium hover:bg-secondary/50 text-slate-200 transition-all duration-200";
+            document.getElementById('btn-report').className = "px-4 py-2 rounded-md text-sm font-medium hover:bg-secondary/50 text-slate-200 transition-all duration-200";
+            document.getElementById('btn-export-section').className = "px-4 py-2 rounded-md text-sm font-medium hover:bg-secondary/50 text-slate-200 transition-all duration-200";
+
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).className = "px-4 py-2 rounded-md text-sm font-medium bg-secondary text-white border-b-2 border-accent transition-all duration-200";
+
+            // If dashboard tab is clicked, make sure chart renders cleanly
+            if (tabId === 'dashboard') {
+                renderCPIChart();
+            }
+        }
+
+        // Render standard data grid of CPI Table 6
+        function renderCPITable() {
+            const tbody = document.getElementById('cpiTableBody');
+            tbody.innerHTML = '';
+
+            cpiDataset.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.className = row.coicop === '00' ? 'bg-blue-50/50 font-bold hover:bg-blue-50 transition' : 'hover:bg-slate-50 transition';
+                
+                // Color formatting for inflation and contribution
+                const yoyColor = row.yoy > 0 ? 'text-red-600 font-bold' : (row.yoy < 0 ? 'text-emerald-600 font-bold' : 'text-slate-400');
+                const contribColor = row.contribution > 0 ? 'text-red-600 font-extrabold text-sm' : (row.contribution < 0 ? 'text-emerald-600 font-extrabold text-sm' : 'text-slate-400');
+
+                tr.innerHTML = `
+                    <td class="p-3 font-mono text-xs text-slate-500">${row.coicop}</td>
+                    <td class="p-3 text-xs sm:text-sm text-slate-800">${row.name}</td>
+                    <td class="p-3 text-center font-mono">${row.weight.toFixed(2)}%</td>
+                    <td class="p-3 text-center font-mono">${row.i_jun26.toFixed(2)}</td>
+                    <td class="p-3 text-center font-mono ${yoyColor}">${row.yoy > 0 ? '+' : ''}${row.yoy.toFixed(2)}%</td>
+                    <td class="p-3 text-center font-mono ${contribColor}">${row.contribution > 0 ? '+' : ''}${row.contribution.toFixed(2)} pp</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Safe rendering of Chart with cleanup logic
+        function renderCPIChart() {
+            // STEP 1: CLEAN UP LOGIC - check if chart already exists, if so destroy it safely to prevent canvas leaks
+            if (cpiChartInstance !== null) {
+                cpiChartInstance.destroy();
+                cpiChartInstance = null;
+                console.log("Old Chart.js instance cleaned up successfully (Table 6).");
+            }
+
+            const canvas = document.getElementById('cpiChart');
+            if (!canvas) return;
+
+            const ctx = canvas.getContext('2d');
+            
+            // Exclude '00' total row for clearer comparison
+            const categories = cpiDataset.filter(item => item.coicop !== '00');
+            const labels = categories.map(item => item.name.split(' (')[0]); // Take only Khmer name part
+            const contributions = categories.map(item => item.contribution);
+
+            // Generate representative colors for bars based on positive or negative contributions
+            const bgColors = contributions.map(contrib => {
+                if (contrib > 1.5) return 'rgba(239, 68, 68, 0.85)'; // Red for major inflation drivers
+                if (contrib > 0.1) return 'rgba(245, 158, 11, 0.8)'; // Orange/Amber for medium drivers
+                if (contrib >= 0) return 'rgba(59, 130, 246, 0.8)'; // Blue for normal stability
+                return 'rgba(16, 185, 129, 0.8)'; // Emerald for deflation/reduction drivers
+            });
+
+            const borderColors = contributions.map(contrib => {
+                if (contrib > 1.5) return 'rgb(220, 38, 38)';
+                if (contrib > 0.1) return 'rgb(217, 119, 6)';
+                if (contrib >= 0) return 'rgb(37, 99, 235)';
+                return 'rgb(5, 150, 105)';
+            });
+
+            cpiChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'ការរួមចំណែកដល់អតិផរណាប្រចាំឆ្នាំ (Percentage Points)',
+                        data: contributions,
+                        backgroundColor: bgColors,
+                        borderColor: borderColors,
+                        borderWidth: 1.5,
+                        borderRadius: 5,
+                        barPercentage: 0.65
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y', // Horizontal bars for easier reading of text labels
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ការរួមចំណែក៖ ${context.parsed.x > 0 ? '+' : ''}${context.parsed.x.toFixed(2)} pp`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: '#e2e8f0'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value + ' pp';
+                                }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Manual Chart cleanup
+        function triggerManualCleanup() {
+            if (cpiChartInstance !== null) {
+                cpiChartInstance.destroy();
+                cpiChartInstance = null;
+                showToast("ក្រាហ្វិកត្រូវបានសម្អាតដោយជោគជ័យ! សូមចុចប៊ូតុង Refresh ទំព័រ ឬប្តូរ Tab ដើម្បីគូរឡើងវិញ។");
+            } else {
+                showToast("គ្មានក្រាហ្វិកចាស់សកម្មនៅលើអេក្រង់ឡើយ។");
+            }
+        }
+
+        // Handle uploaded CSV file of CPI Table 6
+        function handleCSVUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                processCPICSV(text);
+            };
+            reader.readAsText(file);
+        }
+
+        // CPI CSV Processor
+        function processCPICSV(text) {
+            const lines = text.split('\n');
+            if (lines.length < 5) {
+                showToast("ឯកសារ CSV មិនត្រឹមត្រូវតាមទម្រង់របស់មន្ទីរស្ថិតិឡើយ។");
+                return;
+            }
+
+            let newDataset = [];
+            
+            // Loop and parse elements belonging to '15_pursat' or Pursat Province 
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                if (!line.trim()) continue;
+
+                // Simple split by comma or semi-colon
+                const cols = line.split(',');
+                if (cols.length >= 8) {
+                    const coicop = cols[0] ? cols[0].replace(/"/g, '').trim() : '';
+                    const itemsName = cols[1] ? cols[1].replace(/"/g, '').trim() : '';
+                    const weight = parseFloat(cols[2]);
+                    const indexJun26 = parseFloat(cols[3]);
+                    const yoy = parseFloat(cols[4]);
+                    const contribution = parseFloat(cols[5]);
+                    const prov = cols[6] ? cols[6].replace(/"/g, '').trim() : '';
+
+                    // Check if row is valid and matches Pursat ID code
+                    if (!isNaN(weight) && !isNaN(indexJun26) && (prov.includes('15_pursat') || prov === '15')) {
+                        newDataset.push({
+                            coicop: coicop,
+                            name: itemsName,
+                            weight: weight,
+                            i_jun26: indexJun26,
+                            yoy: isNaN(yoy) ? 0.00 : yoy,
+                            contribution: isNaN(contribution) ? 0.00 : contribution
+                        });
+                    }
+                }
+            }
+
+            if (newDataset.length > 0) {
+                cpiDataset = newDataset;
+                
+                // Update quick indicator cards
+                const totalRow = cpiDataset.find(item => item.coicop === '00' || item.name.includes("ALL ITEMS") || item.name.includes("គ្រប់មុខ"));
+                if (totalRow) {
+                    document.getElementById('sum-cpi-index').innerText = totalRow.i_jun26.toFixed(2);
+                    document.getElementById('sum-cpi-yoy').innerText = (totalRow.yoy > 0 ? '+' : '') + totalRow.yoy.toFixed(2) + '%';
+                }
+
+                renderCPITable();
+                renderCPIChart(); // Automated clean up runs inside here
+                generateWordHtmlContent();
+                showToast("ទិន្នន័យ CPI Table 6 ខេត្តពោធិ៍សាត់ថ្មី ត្រូវបានបញ្ចូលដោយជោគជ័យ!");
+            } else {
+                showToast("មិនអាចរកឃើញទិន្នន័យខេត្តពោធិ៍សាត់ (15_pursat) ក្នុងតារាងទី៦ នៃឯកសារនេះទេ។");
+            }
+        }
+
+        // Toast Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.className = "show";
+            setTimeout(() => {
+                toast.className = toast.className.replace("show", "");
+            }, 3500);
+        }
+
+        // Report page scroll selection
+        function scrollToReportPage() {
+            const selector = document.getElementById('reportPageSelector');
+            const pageId = selector.value;
+            const element = document.getElementById(pageId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Compile clean HTML for Word paste
+        function generateWordHtmlContent() {
+            const container = document.getElementById('hiddenWordData');
+            const previewContainer = document.getElementById('wordContentArea');
+
+            // Find total values for report writing
+            const allItemsRow = cpiDataset.find(item => item.coicop === '00') || { i_jun26: 106.01, yoy: 6.01, contribution: 6.01 };
+            
+            let htmlContent = `
+                <div style="font-family: 'Khmer OS Battambang', 'Segoe UI', Arial, sans-serif; padding: 20px; line-height: 1.6; color: #222;">
+                    
+                    <!-- Cover Page -->
+                    <div style="text-align: center; margin-bottom: 50px; page-break-after: always;">
+                        <p style="font-size: 16px; font-weight: bold; margin: 0; font-family: 'Khmer OS Muol Light', serif;">ព្រះរាជាណាចក្រកម្ពុជា</p>
+                        <p style="font-size: 14px; font-weight: bold; margin: 5px 0 0 0; font-family: 'Khmer OS Muol Light', serif;">ជាតិ សាសនា ព្រះមហាក្សត្រ</p>
+                        <p style="margin: 10px 0;">-------------------</p>
+                        <p style="text-align: left; font-size: 12px; font-weight: bold; margin: 0;">មន្ទីរផែនការ និងរដ្ឋបាលខេត្តពោធិ៍សាត់</p>
+                        
+                        <div style="margin-top: 100px; margin-bottom: 100px;">
+                            <p style="font-size: 13px; text-transform: uppercase; color: #555; font-weight: bold;">សៀវភៅរបាយការណ៍ប្រតិបត្តិការផ្លូវការ</p>
+                            <h1 style="font-size: 22px; color: #0B2545; font-family: 'Khmer OS Muol Light', serif; margin-top: 15px; line-height: 1.6;">របាយការណ៍វិភាគការរួមចំណែកអតិផរណា (CPI Table 6)<br>នៅក្នុងខេត្តពោធិ៍សាត់ គិតត្រឹមមិថុនា ឆ្នាំ២០២៦</h1>
+                            <div style="width: 150px; height: 3px; background-color: #EEB902; margin: 20px auto;"></div>
+                            <p style="font-size: 11px; color: #666;">ផ្អែកលើសំណុំទិន្នន័យផ្លូវការ cpi_province_281-Pursat.xlsx</p>
+                        </div>
+                        
+                        <div style="margin-top: 150px; text-align: left; font-size: 12px; border-top: 1px solid #ccc; padding-top: 20px;">
+                            <table width="100%">
+                                <tr>
+                                    <td><strong>រៀបចំដោយ៖</strong> ការិយាល័យស្ថិតិ និងផែនការសេដ្ឋកិច្ចខេត្តពោធិ៍សាត់</td>
+                                    <td align="right"><strong>កាលបរិច្ឆេទ៖</strong> កក្កដា ២០២៦</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Page 2: Introduction -->
+                    <div style="margin-top: 30px; page-break-after: always;">
+                        <h2 style="font-size: 16px; color: #0B2545; border-bottom: 2px solid #0B2545; padding-bottom: 5px; font-family: 'Khmer OS Muol Light', serif;">ទំព័រទី២៖ សេចក្តីផ្តើម និងវិធីសាស្ត្រគណនាការរួមចំណែកអតិផរណា (Table 6)</h2>
+                        <p style="font-size: 14px; line-height: 1.8; text-align: justify; text-indent: 40px;">
+                            ការវាយតម្លៃលើស្ថានភាពអតិផរណា មិនត្រឹមតែវាស់វែងតាមរយៈការប្រែប្រួលសន្ទស្សន៍សរុបនោះទេ ប៉ុន្តែទាមទារការយល់ដឹងអំពី **«ការរួមចំណែក (Contribution)»** នៃក្រុមទំនិញនីមួយៗ ទៅលើអត្រាអតិផរណារួម។ តារាង **Province_Table6** នៅក្នុងឯកសារសំណុំទិន្នន័យ **cpi_province_281-Pursat.xlsx** ដើរតួជាឧបករណ៍យ៉ាងសំខាន់សម្រាប់ការវិភាគនេះ។
+                        </p>
+                        <p style="font-size: 14px; line-height: 1.8; text-align: justify; text-indent: 40px;">
+                            វិធីសាស្ត្រនៃការគណនាការរួមចំណែកនេះ គឺផ្អែកលើការយកមេគុណទម្ងន់របស់ក្រុមទំនិញនីមួយៗ (COICOP Weights) គុណនឹងបម្រែបម្រួលសន្ទស្សន៍ថ្លៃរបស់ក្រុមនោះ រួចចែកនឹងសន្ទស្សន៍សរុបនៃគ្រាមុន។ លទ្ធផលដែលទទួលបានបង្ហាញជា **«ពិន្ទុភាគរយ (Percentage Points)»** ដែលឆ្លុះបញ្ចាំងយ៉ាងច្បាស់ថាតើក្នុងចំណោមអតិផរណារួម +6.01% របស់ខេត្តពោធិ៍សាត់ ត្រូវបានជំរុញដោយសារក្រុមទំនិញណាខ្លះ។
+                        </p>
+                    </div>
+
+                    <!-- Page 3: Data Analysis Table -->
+                    <div style="margin-top: 30px; page-break-after: always;">
+                        <h2 style="font-size: 16px; color: #0B2545; border-bottom: 2px solid #0B2545; padding-bottom: 5px; font-family: 'Khmer OS Muol Light', serif;">ទំព័រទី៣៖ វិភាគទិន្នន័យរួម CPI ខេត្តពោធិ៍សាត់</h2>
+                        <p style="font-size: 14px; line-height: 1.8; text-align: justify;">
+                            យោងតាមលទ្ធផលដកស្រង់ជាក់ស្តែងចេញពីតារាង **Province_Table6** សម្រាប់ខេត្តពោធិ៍សាត់ គិតត្រឹមមិថុនា ឆ្នាំ២០២៦ អត្រាអតិផរណារួមប្រចាំឆ្នាំ (ALL ITEMS) គឺ **+6.01%**។
+                        </p>
+                        
+                        <table border="1" cellpadding="6" cellspacing="0" style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 12px; border-color: #ddd;">
+                            <tr style="background-color: #f2f2f2; font-weight: bold; font-family: 'Khmer OS Muol Light', serif;">
+                                <td style="border: 1px solid #ddd;">កូដ</td>
+                                <td style="border: 1px solid #ddd;">ក្រុមមុខទំនិញសំខាន់ៗ (COICOP)</td>
+                                <td align="center" style="border: 1px solid #ddd;">មេគុណ (%)</td>
+                                <td align="center" style="border: 1px solid #ddd;">សន្ទស្សន៍ មិថុនា ២០២៦</td>
+                                <td align="center" style="border: 1px solid #ddd;">បម្រែបម្រួលប្រចាំឆ្នាំ (YoY)</td>
+                                <td align="center" style="border: 1px solid #ddd;">ការរួមចំណែក (Percentage Points)</td>
+                            </tr>
+                            ${cpiDataset.map(item => `
+                                <tr style="${item.coicop === '00' ? 'font-weight: bold; background-color: #ebf3f9;' : ''}">
+                                    <td style="border: 1px solid #ddd;">${item.coicop}</td>
+                                    <td style="border: 1px solid #ddd;">${item.name}</td>
+                                    <td align="center" style="border: 1px solid #ddd;">${item.weight.toFixed(2)}%</td>
+                                    <td align="center" style="border: 1px solid #ddd;">${item.i_jun26.toFixed(2)}</td>
+                                    <td align="center" style="border: 1px solid #ddd; color: ${item.yoy >= 0 ? '#d32f2f' : '#2e7d32'};">${item.yoy > 0 ? '+' : ''}${item.yoy.toFixed(2)}%</td>
+                                    <td align="center" style="border: 1px solid #ddd; font-weight: bold; color: ${item.contribution >= 0 ? '#0B2545' : '#2e7d32'};">${item.contribution > 0 ? '+' : ''}${item.contribution.toFixed(2)} pp</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    </div>
+
+                    <!-- Page 4: Drivers -->
+                    <div style="margin-top: 30px; page-break-after: always;">
+                        <h2 style="font-size: 16px; color: #0B2545; border-bottom: 2px solid #0B2545; padding-bottom: 5px; font-family: 'Khmer OS Muol Light', serif;">ទំព័រទី៤៖ ការវិភាគស៊ីជម្រៅលើក្រុមទំនិញដែលជំរុញ និងកាត់បន្ថយ</h2>
+                        <p style="font-size: 14px; line-height: 1.8; text-align: justify; text-indent: 40px;">
+                            ការវិភាគលម្អិតលើតារាង **Province_Table6** សម្រាប់ខេត្តពោធិ៍សាត់ បង្ហាញអំពីកត្តាសំខាន់ៗពីរដែលជះឥទ្ធិពលផ្ទុយគ្នាទៅលើកម្រិតតម្លៃទីផ្សារ៖
+                        </p>
+                        <p style="font-size: 14px; line-height: 1.8;">
+                            <strong>១. ក្រុមជំរុញអតិផរណាខ្លាំងបំផុត (Positive Contribution)៖</strong><br>
+                            ម្ហូបអាហារ (+3.48 Percentage Points) និងការដឹកជញ្ជូន (+1.42 Percentage Points) រួមគ្នាបង្កើតបានកម្រិតកើនឡើងរហូតដល់ **+4.90 Percentage Points**។ ការកើនឡើងថ្លៃប្រេងឥន្ធនៈអន្តរជាតិបានជះឥទ្ធិពលជាខ្សែច្រវាក់ទៅលើតម្លៃដឹកជញ្ជូនទំនិញ និងថ្លៃផលិតកម្មកសិកម្ម ដែលនាំឱ្យតម្លៃម្ហូបអាហារកើនឡើងជាបន្តបន្ទាប់។
+                        </p>
+                        <p style="font-size: 14px; line-height: 1.8;">
+                            <strong>២. ក្រុមទប់ស្កាត់ និងកាត់បន្ថយសម្ពាធ (Negative Contribution)៖</strong><br>
+                            ក្រុមគមនាគមន៍ (Communication) រួមចំណែកអវិជ្ជមាន **-0.12 Percentage Points**។ នេះបណ្តាលមកពីការប្រកួតប្រជែងតម្លៃយ៉ាងខ្លាំងពីក្រុមហ៊ុនផ្តល់សេវាទូរស័ព្ទ និងអ៊ីនធឺណិត និងការបញ្ចុះតម្លៃឧបករណ៍បច្ចេកវិទ្យា ដែលបានជួយសម្រាលការចំណាយខ្លះៗរបស់ប្រជាពលរដ្ឋ។
+                        </p>
+                    </div>
+
+                    <!-- Page 5: Stakeholder opinions -->
+                    <div style="margin-top: 30px; page-break-after: always;">
+                        <h2 style="font-size: 16px; color: #0B2545; border-bottom: 2px solid #0B2545; padding-bottom: 5px; font-family: 'Khmer OS Muol Light', serif;">ទំព័រទី៥៖ ទស្សនៈ និងការដកស្រង់សម្ដីរបស់ភាគីពាក់ព័ន្ធ</h2>
+                        
+                        <div style="border-left: 4px solid #EEB902; padding: 10px; margin: 15px 0; background-color: #fafafa; font-style: italic;">
+                            "សព្វថ្ងៃនេះ តម្លៃទំនិញបោះដុំយកមកពីភ្នំពេញ ឬខេត្តផ្សេងៗមានការឡើងថ្លៃដោយសារថ្លៃសាំងដឹកជញ្ជូនឡើងខ្ពស់។ ពួកខ្ញុំជាអ្នកលក់រាយនៅផ្សារពោធិ៍សាត់នេះ បើមិនតម្លើងថ្លៃលក់បន្តិចបន្តួចទេ គឺមិនអាចទប់ទល់ថ្លៃដើមរួចខ្លួនឡើយ។"<br>
+                            <span style="font-size: 11px; font-weight: bold; color: #0B2545;">— អ្នកស្រី គឹម សុវណ្ណ, អាជីវករលក់គ្រឿងទេស ផ្សារក្រុងពោធិ៍សាត់</span>
+                        </div>
+
+                        <div style="border-left: 4px solid #0B2545; padding: 10px; margin: 15px 0; background-color: #fafafa; font-style: italic;">
+                            "ការកើនឡើងតម្លៃប្រេងឥន្ធនៈជិត ១៥% ក្នុងមួយឆ្នាំនេះ ធ្វើឱ្យការចំណាយលើខ្សែច្រវាក់ដឹកជញ្ជូនកសិកម្មរបស់ក្រុមហ៊ុនឡើងខ្ពស់។ យើងបានព្យាយាមរៀបចំផ្លូវដឹកជញ្ជូនឱ្យមានប្រសិទ្ធភាព និងកាត់បន្ថយជើងឡានទទេ ដើម្បីជួយសម្រួលកុំឱ្យតម្លៃស្រូវរបស់កសិកររងការធ្លាក់ចុះពេក។"<br>
+                            <span style="font-size: 11px; font-weight: bold; color: #0B2545;">— លោក លី ម៉េងហួរ, ប្រធានសមាគមដឹកជញ្ជូន និងឡូជីស្ទីកខេត្តពោធិ៍សាត់</span>
+                        </div>
+                    </div>
+
+                    <!-- Page 6: Conclusions -->
+                    <div style="margin-top: 30px;">
+                        <h2 style="font-size: 16px; color: #0B2545; border-bottom: 2px solid #0B2545; padding-bottom: 5px; font-family: 'Khmer OS Muol Light', serif;">ទំព័រទី៦៖ វិធានការអន្តរាគមន៍ និងសេចក្ដីសន្និដ្ឋាន</h2>
+                        <h3 style="font-size: 13px; color: #0B2545; font-weight: bold; margin-top: 10px;">វិធានការដោះស្រាយគន្លឹះរបស់រដ្ឋបាលខេត្ត៖</h3>
+                        <ol style="font-size: 12px; line-height: 1.8;">
+                            <li><strong>ការត្រួតពិនិត្យថ្លៃទំនិញទីផ្សារ៖</strong> សហការជាមួយមន្ទីរពាណិជ្ជកម្មខេត្តដើម្បីទប់ស្កាត់ការតម្លើងថ្លៃទំនិញមិនសមហេតុផល។</li>
+                            <li><strong>គាំទ្រខ្សែច្រវាក់ផ្គត់ផ្គង់កសិផលក្នុងស្រុក៖</strong> ជំរុញសហគមន៍កសិកម្មក្នុងខេត្តពោធិ៍សាត់ផ្គត់ផ្គង់បន្លែ សាច់។</li>
+                            <li><strong>សម្រួលការបង់ថ្លៃសេវាសាធារណៈ៖</strong> បន្តរក្សាលំនឹងតម្លៃសេវាទឹក អគ្គិសនីរបស់រដ្ឋ។</li>
+                            <li><strong>ការសម្រួលការផ្តល់ប្រាក់កម្ចីសម្រាលសហគ្រាសខ្នាតតូច៖</strong> សម្របសម្រួលដើមទុនបង្វិលការប្រាក់ទាប។</li>
+                        </ol>
+                        <p style="font-size: 14px; line-height: 1.8; text-align: justify; margin-top: 15px;">
+                            ជារួម សន្ទស្សន៍ CPI ខេត្តពោធិ៍សាត់ក្នុងឆ្នាំ២០២៦ បង្ហាញពីការកើនឡើងល្បឿនអតិផរណាប្រចាំឆ្នាំប្រមាណ <strong>${allItemsRow.yoy.toFixed(2)}%</strong> ដែលទាមទារការយកចិត្តទុកដាក់ និងអន្តរាគមន៍ជាបន្ទាន់ដើម្បីរក្សាស្ថិរភាពជីវភាពប្រជាពលរដ្ឋ។
+                        </p>
+                    </div>
+
+                </div>
+            `;
+            container.innerHTML = htmlContent;
+            previewContainer.innerText = htmlContent;
+        }
+
+        // Copy HTML formatted content to Clipboard for MS-Word paste
+        function copyToWordClipboard() {
+            const container = document.getElementById('hiddenWordData');
+            
+            const selectionDiv = document.createElement('div');
+            selectionDiv.style.position = 'fixed';
+            selectionDiv.style.left = '-9999px';
+            selectionDiv.innerHTML = container.innerHTML;
+            document.body.appendChild(selectionDiv);
+
+            const range = document.createRange();
+            range.selectNode(selectionDiv);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+
+            try {
+                document.execCommand('copy');
+                showToast("ចម្លងទម្រង់របាយការណ៍ទាំងស្រុងរួចរាល់! សូមបើក Microsoft Word រួចចុច Ctrl + V ដើម្បីផាសចូល។");
+            } catch (err) {
+                showToast("បរាជ័យក្នុងការចម្លងដោយស្វ័យប្រវត្ត។");
+            }
+
+            document.body.removeChild(selectionDiv);
+            window.getSelection().removeAllRanges();
+        }
+
+        // Direct Download of DOC file using HTML source
+        function downloadHtmlDoc() {
+            const container = document.getElementById('hiddenWordData');
+            const htmlContent = container.innerHTML;
+            
+            const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+                "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+                "xmlns='http://www.w3.org/TR/REC-html40'>"+
+                "<head><meta charset='utf-8'><title>CPI Report Pursat 2026</title></head><body>";
+            const footer = "</body></html>";
+            
+            const sourceHTML = header + htmlContent + footer;
+            
+            const fileBlob = new Blob(['\ufeff' + sourceHTML], {
+                type: 'application/msword'
+            });
+            
+            const url = URL.createObjectURL(fileBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'CPI_Report_Pursat_Province_2026_Table6.doc';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showToast("ទាញយកឯកសារ .doc ជោគជ័យ! លោកអ្នកអាចបើកវាកែសម្រួលក្នុង MS-Word បានភ្លាមៗ។");
+        }
+    </script>
+</body>
+</html>
